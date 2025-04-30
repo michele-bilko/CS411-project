@@ -23,7 +23,7 @@ class Books(db.Model):
     google_books_id = db.Column(db.String(40), unique=True, nullable=False)
     title = db.Column(db.String(100), nullable=False)
     authors = db.Column(db.String(100), nullable=False)
-    genres = db.Column(db.String(100), nullable=False)
+    genres = db.Column(db.String(100))
     description = db.Column(db.Text)
     page_count = db.Column(db.Integer)
     date_published = db.Column(db.String(20))
