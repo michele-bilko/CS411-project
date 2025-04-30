@@ -3,59 +3,56 @@ from typing import List
 
 from sqlalchemy.exc import IntegrityError
 
-from boxing.db import db
-from boxing.utils.logger import configure_logger
+from book_discovery.db import db
+from book_discovery.utils.logger import configure_logger
 
 
 logger = logging.getLogger(__name__)
 configure_logger(logger)
 
 
-class Boxers(db.Model):
-    """Represents a competitive boxer in the system.
+class Books(db.Model):
+    """Represents a book retrieved from Google Books API in the system.
 
-    This model maps to the 'boxers' table in the database and stores personal
-    and performance-related attributes such as name, weight, height, reach,
-    age, and fight statistics. Used in a Flask-SQLAlchemy application to
-    manage boxer data, run simulations, and track fight outcomes.
+    This model maps to the 'books' table in the database and stores metadata such as title, author, and publication info. Used in a Flask-SQLAlchemy application to allow users to discover, track, and manage books they're interested in reading.
 
     """
-    __tablename__ = "boxers"
+    __tablename__ = "books"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    weight = db.Column(db.Float, nullable=False)
-    height = db.Column(db.Float, nullable=False)
-    reach = db.Column(db.Float, nullable=False)
-    age = db.Column(db.Integer, nullable=False)
-    fights = db.Column(db.Integer, nullable=False, default=0)
-    wins = db.Column(db.Integer, nullable=False, default=0)
-    losses = db.Column(db.Integer, nullable=False, default=0)
+    google_books_id = db.Column(db.String(40), unique=True, nullable=False)
+    title = db.Column(db.String(100), nullable=False)
+    authors = db.Column(db.String(100), nullable=False)
+    genres = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    page_count = db.Column(db.Integer)
+    date_published = db.Column(db.String(20))
 
-    def __init__(self, name: str, weight: float, height: float, reach: float, age: int):
-        """Initialize a new Boxer instance with basic attributes.
+
+
+    def __init__(self, google_books_id, title, authors, genres=None, description=None, page_count=None, date_published=None):
+        """Initialize a new Book instance with basic attributes.
 
         Args:
-            name (str): The boxer's name. Must be unique.
-            weight (float): The boxer's weight in pounds. Must be at least 125.
-            height (float): The boxer's height in inches. Must be greater than 0.
-            reach (float): The boxer's reach in inches. Must be greater than 0.
-            age (int): The boxer's age. Must be between 18 and 40, inclusive.
-
-        Notes:
-            - The boxer's weight class is automatically assigned based on weight.
-            - Fight statistics (`fights` and `wins`) are initialized to 0 by default in the database schema.
+            google_books_id (str): Unique Google Books Identifier.
+            title (str): Title of the book.
+            authors (str): Author(s) of the book.
+            genres (str): genre(s) or categories of the book.
+            description (str): A brief description of the book.
+            page_count (int): The book's page count.
+            date_published (str): The book's date or year of publication.
 
         """
 
-        self.name = name
-        self.weight = weight
-        self.height = height
-        self.reach = reach
-        self.age = age
+        self.google_books_id = google_books_id
+        self.title = title
+        self.authors = authors
+        self.genres = genres
+        self.description = description
+        self.page_count = page_count
+        self.date_published = date_published
 
-        self.weight_class = self.get_weight_class(self.weight)
-
+        
 
     @classmethod
     def get_weight_class(cls, weight: float) -> str:
