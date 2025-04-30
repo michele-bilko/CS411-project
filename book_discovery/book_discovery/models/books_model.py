@@ -55,60 +55,20 @@ class Books(db.Model):
         
 
     @classmethod
-    def get_weight_class(cls, weight: float) -> str:
-        """Determine the weight class based on weight.
-
-        This method is defined as a class method rather than a static method,
-        even though it does not currently require access to the class object.
-        Both @staticmethod and @classmethod would be valid choices in this context;
-        however, using @classmethod makes it easier to support subclass-specific
-        behavior or logic overrides in the future.
+    def create_book(cls, google_books_id: str, title: str, authors: str, genres: str = None, description: str = None, page_count: int = None, date_published: str = None) -> None:
+        """Create and persist a new Book.
 
         Args:
-            weight: The weight of the boxer.
-
-        Returns:
-            str: The weight class of the boxer.
-
-        Raises:
-            ValueError: If the weight is less than 125.
-
-        """
-        
-        if weight < 125:
-            raise ValueError("Weight must be more than 125")
-
-        elif weight < 139:
-            weight_class = "featherweight"
-        elif weight < 152:
-            weight_class = "lightweight"
-        elif weight < 165:
-            weight_class = "welterweight"
-        elif weight < 179:
-            weight_class = "middleweight"
-        elif weight < 201:
-            weight_class = "light heavyweight"
-        elif weight <= 201:
-            weight_class = "heavyweight"
-        else:
-            weight_class = "super heavyweight"
-
-        return weight_class 
-
-    @classmethod
-    def create_boxer(cls, name: str, weight: float, height: float, reach: float, age: int) -> None:
-        """Create and persist a new Boxer instance.
-
-        Args:
-            name: The name of the boxer.
-            weight: The weight of the boxer.
-            height: The height of the boxer.
-            reach: The reach of the boxer.
-            age: The age of the boxer.
+            google_books_id: Unique Google Books Identifier.
+            title: Title of the book.
+            authors: Author(s) of the book.
+            genres: genre(s) or categories of the book.
+            description: A brief description of the book.
+            page_count: The book's page count.
+            date_published: The book's date or year of publication.
 
         Raises:
-            IntegrityError: If a boxer with the same name already exists.
-            ValueError: If the weight is less than 125 or if any of the input parameters are invalid.
+            IntegrityError: If a book with the same name already exists.
             SQLAlchemyError: If there is a database error during creation.
 
         """
