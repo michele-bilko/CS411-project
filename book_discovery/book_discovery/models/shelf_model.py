@@ -180,26 +180,26 @@ shed.")
 
         if book_list == "tbr":
             if book_id not in self.tbr:
-            logger.warning(f"Book ID {book_id} is not on the specified list.")
-            raise ValueError("Book ID {book_id} is not on the specified list.")
-        self.tbr.remove(book_id)
+                logger.warning(f"Book ID {book_id} is not on the specified list.")
+                raise ValueError("Book ID {book_id} is not on the specified list.")
+            self.tbr.remove(book_id)
+            
 
         elif book_list == "currently_reading":
             if book_id not in self.currently_reading:
-            logger.warning(f"Book ID {book_id} is not on the specified list.")
-            raise ValueError("Book ID {book_id} is not on the specified list.")
-	self.currently_reading.remove(book_id)
+                logger.warning(f"Book ID {book_id} is not on the specified list.")
+                raise ValueError("Book ID {book_id} is not on the specified list.")
+            self.currently_reading.remove(book_id)
 
         elif book_list == "finished_reads":
-            if book_id not in self.currently_reading:
-            logger.warning(f"Book ID {book_id} is not on the specified list.")
-            raise ValueError("Book ID {book_id} is not on the specified list.")
-        self.finished_reads.remove(book_id)
+            if book_id not in self.finished_reads:
+                logger.warning(f"Book ID {book_id} is not on the specified list.")
+                raise ValueError("Book ID {book_id} is not on the specified list.")
+            self.finished_reads.remove(book_id)
 
-
-else:
-    logger.error(f"Invalid book list: {book_list}.")
-    Valueerror(f"Invalid book list: {book_list}.")
+        else:
+            logger.error(f"Invalid book list: {book_list}.")
+            ValueError(f"Invalid book list: {book_list}.")
     
             
         
