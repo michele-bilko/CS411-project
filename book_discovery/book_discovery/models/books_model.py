@@ -76,21 +76,21 @@ class Books(db.Model):
 
         
         try:
-            boxer = Boxers(name, weight, height, reach, age)
+            book = Books(title, authors, genres, description, page_count, date_published)
 
-            existing = Boxers.query.filter_by(name=name).first()
+            existing = Books.query.filter_by(google_books_id=google_books_id).first()
             if existing:
-                logger.error(f"Boxer: '{name}' already exists.")
-                raise ValueError(f"Boxer with name '{name}' already exists.")
+                logger.error(f"Book: '{google_books_id}' already exists.")
+                raise ValueError(f"Book with name '{google_books_id}' already exists.")
 
-            db.session.add(boxer)
+            db.session.add(book)
             db.session.commit()
-            logger.info(f"Boxer created successfully: {name}")
+            logger.info(f"Book created successfully: {google_books_id}")
             
         except IntegrityError:
-            logger.error(f"Boxer with name '{name}' already exists.")
+            logger.error(f"Book with ID '{google_books_id}' already exists in database.")
             db.session.rollback()
-            raise ValueError(f"Boxer with name '{name}' already exists.")
+            raise ValueError(f"Book already exists in database.")
         
         except SQLAlchemyError as e:
             logger.error(f"Database error during creation: {e}")
