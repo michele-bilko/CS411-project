@@ -209,6 +209,35 @@ shed.")
             book_id (str): The Google Books ID of the book.
             rating (int): The rating to assign.
 
+        Raises:
+            ValueError: If the book ID or rating is invalid.
+
+        """
+        if rating < 1 or rating > 5:
+            logger.warning(f"Invalid rating: {rating}")
+            raise ValueError("Rating must be from 1-5")
+
+        now = time.time()
+
+        if book_id in self._book_cache and self._ttl.get(book_id, 0) > now:
+                logger.debug(f"Book ID {book_id} retrieved from cache")
+                book = self._book_cache[book_id]
+        else:
+            try:
+                book = Books.get_book_by_id(book_id)
+                logger.info(f"Book ID {book_id} loaded from DB")
+
+            except ValueError as e:
+                logger.error(str(e))
+                raise
+
+        self._book_cache[book_id] = book
+        self._ttl[book_id] = now + self.ttl_seconds
+
+        book.rating = rating
+        db.session.commit()
+        logger.info(f"Rating: {rating} assigned to book {book.title}")
+
 
     def get_tbr_books(self) -> List[Books]:
         """Retrieves the tbr list.
