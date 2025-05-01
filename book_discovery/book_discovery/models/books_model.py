@@ -99,7 +99,7 @@ class Books(db.Model):
 
     @classmethod
     def get_book_by_id(cls, book_id: int) -> "Books":
-        """Retrieve a boxer by ID.
+        """Retrieve a book by ID.
 
         Args:
             book_id: The ID of the book.
