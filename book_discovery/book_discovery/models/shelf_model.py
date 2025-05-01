@@ -24,7 +24,7 @@ class ShelfModel:
         The TTL is set to 60 seconds by default, but this can be overridden by setting the TTL_SECONDS environment variable.
 
         Attributes:
-            tbr (List[str): A list with to-read books.
+            tbr (List[str]): A list with to-read books.
             currently_reading (List[str]): A list of in-progress reads.
             finished_reads: A list of completed reads.
             _book_cache (dict[int, Books]): A cache to store book objects for quick access.
@@ -40,107 +40,38 @@ class ShelfModel:
         self._ttl: dict[int, float] = {}
         self.ttl_seconds = int(os.getenv("TTL_SECONDS", 60))
 
-    def fight(self) -> str:
-        """Simulates a fight between two combatants.
 
-        Simulates a fight between two combatants. Computes their fighting skill levels,
-        normalizes the difference, and determines the winner based on a random number.
-
-        Returns:
-            str: The name of the winning boxer.
-
-        Raises:
-            ValueError: If there are not enough boxers in the ring.
-
-        """
-        if len(self.ring) < 2:
-            logger.error("There must be two boxers to start a fight.")
-            raise ValueError("There must be two boxers to start a fight.")
-
-        boxer_1, boxer_2 = self.get_boxers()
-
-        logger.info(f"Fight started between {boxer_1.name} and {boxer_2.name}")
-
-        skill_1 = self.get_fighting_skill(boxer_1)
-        skill_2 = self.get_fighting_skill(boxer_2)
-
-        logger.debug(f"Fighting skill for {boxer_1.name}: {skill_1:.3f}")
-        logger.debug(f"Fighting skill for {boxer_2.name}: {skill_2:.3f}")
-
-        # Compute the absolute skill difference
-        # And normalize using a logistic function for better probability scaling
-        delta = abs(skill_1 - skill_2)
-        normalized_delta = 1 / (1 + math.e ** (-delta))
-
-        logger.debug(f"Raw delta between skills: {delta:.3f}")
-        logger.debug(f"Normalized delta: {normalized_delta:.3f}")
-
-        random_number = get_random()
-
-        logger.debug(f"Random number from random.org: {random_number:.3f}")
-
-        if random_number < normalized_delta:
-            winner = boxer_1
-            loser = boxer_2
-        else:
-            winner = boxer_2
-            loser = boxer_1
-
-        logger.info(f"The winner is: {winner.name}")
-
-        winner.update_stats('win')
-        loser.update_stats('loss')
-
-        self.clear_ring()
-
-        return winner.name
-
-    def clear_ring(self):
-        """Clears the list of boxers.
-
-        """
-        if not self.ring:
-            logger.warning("Attempted to clear an empty ring.")
-            return
-        logger.info("Clearing the boxers from the ring.")
-        self.ring.clear()
-
-
-    def enter_ring(self, boxer_id: int):
-        """Prepares a boxer by adding them to the ring for an upcoming fight.
+    def add_book_to_tbr(self, book_id: str):
+        """Add a new book to the tbr list.
 
         Args:
-            boxer_id (int): The ID of the boxer to enter the ring.
+            book_id (str): The ID of the book to be added to the tbr list.
 
         Raises:
-            ValueError: If the ring already has two boxers (fight is full).
             ValueError: If the boxer ID is invalid or the boxer does not exist.
 
         """
-        if len(self.ring) >= 2:
-            logger.error(f"Attempted to add boxer ID {boxer_id} but the ring is full")
-            raise ValueError("Ring is full")
-
+        
         now = time.time()
 
-        if boxer_id in self._boxer_cache and self._ttl.get(boxer_id, 0) > now:
-                logger.debug(f"Boxer ID {boxer_id} retrieved from cache")
-                boxer = self._boxer_cache[boxer_id]
+        if book_id in self._book_cache and self._ttl.get(book_id, 0) > now:
+                logger.debug(f"Book ID {book_id} retrieved from cache")
+                book = self._book_cache[book_id]
         else:
             try:
-                boxer = Boxers.get_boxer_by_id(boxer_id)
-                logger.info(f"Boxer ID {boxer_id} loaded from DB")
+                boxer = Books.get_book_by_id(book_id)
+                logger.info(f"Book ID {book_id} loaded from DB")
 
             except ValueError as e:
                 logger.error(str(e))
                 raise
 
-        self._boxer_cache[boxer_id] = boxer
-        self._ttl[boxer_id] = now + self.ttl_seconds
+        self._book_cache[book_id] = book
+        self._ttl[book_id] = now + self.ttl_seconds
 
-        logger.info(f"Adding boxer '{boxer.name}' (ID {boxer_id}) to the ring")
+        logger.info(f"Adding book '{book.title}' (ID {book_id}) to the tbr")
 
-        self.ring.append(boxer_id)
+        self.ring.append(book_id)
 
 
     def get_boxers(self) -> List[Boxers]:
