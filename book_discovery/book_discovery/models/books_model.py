@@ -131,7 +131,7 @@ class Books(db.Model):
     
 
     @classmethod
-    def get_boxer_by_name(cls, name: str) -> "Boxers":
+    def get_book_by_google_books_id(cls, google_books_id: str) -> "Books":
         """Retrieve a boxer by name.
 
         Args:
@@ -148,17 +148,17 @@ class Books(db.Model):
 
         
         try:
-            boxer = cls.query.filter_by(name=name).first()
+            book = cls.query.filter_by(google_books_id=google_books_id).first()
             
-            if boxer is None:
-                logger.info(f"Boxer with name {name} not found.")
-                raise ValueError(f"Boxer with name {name} not found.")
+            if book is None:
+                logger.info(f"Book with Google Books ID {google_books_id} not found.")
+                raise ValueError(f"Book with Google Books ID {google_books_id} not found.")
 
-            logger.info(f"Successfully retrieved boxer: {name}")
-            return boxer
+            logger.info(f"Successfully retrieved book by Google Books ID: {google_books_id}")
+            return book
 
         except SQLAlchemyError as e:
-            logger.error(f"Database error while retrieving boxer by name {name}: {e}")
+            logger.error(f"Database error while retrieving book by Google Books ID {google_books_id}: {e}")
             raise
 
     @classmethod
