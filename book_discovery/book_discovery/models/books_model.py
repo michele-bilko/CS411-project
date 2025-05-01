@@ -68,7 +68,7 @@ class Books(db.Model):
             date_published: The book's date or year of publication.
 
         Raises:
-            IntegrityError: If a book with the same name already exists.
+            ValueError: If a book with the same name already exists.
             SQLAlchemyError: If there is a database error during creation.
 
         """
@@ -98,7 +98,7 @@ class Books(db.Model):
             raise
 
     @classmethod
-    def get_boxer_by_id(cls, boxer_id: int) -> "Boxers":
+    def get_book_by_id(cls, book_id: int) -> "Books":
         """Retrieve a boxer by ID.
 
         Args:
@@ -116,17 +116,17 @@ class Books(db.Model):
 
         
         try:
-            boxer = cls.query.get(boxer_id)
+            boxer = cls.query.get(book_id)
             
-            if boxer is None:
-                logger.info(f"Boxer with ID {boxer_id} not found.")
-                raise ValueError(f"Boxer with ID {boxer_id} not found.")
+            if book is None:
+                logger.info(f"Book with ID {book_id} not found.")
+                raise ValueError(f"Book with ID {book_id} not found.")
 
-            logger.info(f"Successfully retrieved boxer: {boxer_id}")
-            return boxer
+            logger.info(f"Successfully retrieved book by ID: {book_id}")
+            return book
 
         except SQLAlchemyError as e:
-            logger.error(f"Database error while retrieving boxer by ID {boxer_id}: {e}")
+            logger.error(f"Database error while retrieving book by ID {book_id}: {e}")
             raise
     
 
