@@ -91,11 +91,11 @@ class ShelfModel:
 
         if book_id not in self.tbr:
             logger.warning(f"Book ID {book_id} must be added to tbr before it can be moved to current reads.")
-            raise ValueError("Book ID {book_id} must be added to tbr before it can be moved to current reads.")
+            raise ValueError(f"Book ID {book_id} must be added to tbr before it can be moved to current reads.")
         
         if book_id in self.currently_reading:
             logger.warning(f"Book ID {book_id} is already in currently_reading list.")
-            raise ValueError("Book already in currently_reading list.")
+            raise ValueError(f"Book already in currently_reading list.")
         
         now = time.time()
 
@@ -199,7 +199,7 @@ shed.")
 
         else:
             logger.error(f"Invalid book list: {book_list}.")
-            ValueError(f"Invalid book list: {book_list}.")
+            raise ValueError(f"Invalid book list: {book_list}.")
 
     def assign_book_rating(self, book_id: str, rating: int):
         """
@@ -266,7 +266,7 @@ shed.")
 
             books.append(self._book_cache[book_id])
 
-        logger.info(f"Retrieved {len(books)} book from the tbr list.")
+        logger.info(f"Retrieved {len(books)} books from the tbr list.")
         return books
 
     
@@ -297,7 +297,7 @@ shed.")
 
             books.append(self._book_cache[book_id])
 
-        logger.info(f"Retrieved {len(books)} book from the currently_reading list.")
+        logger.info(f"Retrieved {len(books)} books from the currently_reading list.")
         return books
 
     
@@ -328,7 +328,7 @@ shed.")
 
             books.append(self._book_cache[book_id])
 
-        logger.info(f"Retrieved {len(books)} book from the finished_reads list.")
+        logger.info(f"Retrieved {len(books)} books from the finished_reads list.")
         return books
 
     
