@@ -241,7 +241,7 @@ shed.")
             List[Books]: A list of Books dataclass instances representing the books on the currently_reading list.            
                                                    
         """
-        if not self.tbr:
+        if not self.currently_reading:
             logger.warning("Retrieving books from an empty list.")
             return []
         else:
@@ -294,6 +294,8 @@ shed.")
 
         logger.info(f"Retrieved {len(books)} book from the finished_reads list.")
         return books
+
+    
 
     def clear_cache(self):
         """Clears the local TTL cache of book objects.
