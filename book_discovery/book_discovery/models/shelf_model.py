@@ -200,40 +200,100 @@ shed.")
         else:
             logger.error(f"Invalid book list: {book_list}.")
             ValueError(f"Invalid book list: {book_list}.")
-    
-            
-        
+                      
 
 
-    def get_boxers(self) -> List[Boxers]:
-        """Retrieves the current list of boxers in the ring.
+    def get_tbr_books(self) -> List[Books]:
+        """Retrieves the tbr list.
 
         Returns:
-            List[Boxers]: A list of Boxers dataclass instances representing the boxers in the ring.
+            List[Books]: A list of Books dataclass instances representing the books on the tbr list.
 
         """
-        if not self.ring:
-            logger.warning("Retrieving boxers from an empty ring.")
+        if not self.tbr:
+            logger.warning("Retrieving books from an empty list.")
             return []
         else:
-            logger.info(f"Retrieving {len(self.ring)} boxers from the ring.")
+            logger.info(f"Retrieving {len(self.tbr)} books from the tbr list.")
 
         now = time.time()
-        boxers = []
+        books = []
         
-        for boxer_id in self.ring:
-            if boxer_id not in self._boxer_cache or self._ttl.get(boxer_id, 0) < now:
-                logger.info(f"TTL expired or missing for boxer {boxer_id}. Refreshing from DB.")
-                boxer = Boxers.get_boxer_by_id(boxer_id)
-                self._boxer_cache[boxer_id] = boxer
-                self._ttl[boxer_id] = now + self.ttl_seconds
+        for book_id in self.tbr:
+            if book_id not in self._book_cache or self._ttl.get(book_id, 0) < now:
+                logger.info(f"TTL expired or missing for book {book_id}. Refreshing from DB.")
+                book = Books.get_book_by_id(book_id)
+                self._book_cache[book_id] = book
+                self._ttl[book_id] = now + self.ttl_seconds
             else:
-                logger.debug(f"Using cached boxer {boxer_id} (TTL valid).")
+                logger.debug(f"Using cached book {book_id} (TTL valid).")
 
-            boxers.append(self._boxer_cache[boxer_id])
+            books.append(self._book_cache[book_id])
 
-        logger.info(f"Retrieved {len(boxers)} boxers from the ring.")
-        return boxers
+        logger.info(f"Retrieved {len(books)} book from the tbr list.")
+        return books
+
+    
+
+    def get_currently_reading_books(self) -> List[Books]:
+        """Retrieves the currently_reading list.                                                                                                                                                                            
+        Returns:                                                                                               
+            List[Books]: A list of Books dataclass instances representing the books on the currently_reading list.            
+                                                   
+        """
+        if not self.tbr:
+            logger.warning("Retrieving books from an empty list.")
+            return []
+        else:
+            logger.info(f"Retrieving {len(self.currently_reading)} books from the currently_reading list.")
+
+        now = time.time()
+        books = []
+	
+        for book_id in self.currently_reading:
+            if book_id not in self._book_cache or self._ttl.get(book_id, 0) < now:
+                logger.info(f"TTL expired or missing for book {book_id}. Refreshing from DB.")
+                book = Books.get_book_by_id(book_id)
+                self._book_cache[book_id] = book
+                self._ttl[book_id] = now + self.ttl_seconds
+            else:
+                logger.debug(f"Using cached book {book_id} (TTL valid).")
+
+            books.append(self._book_cache[book_id])
+
+        logger.info(f"Retrieved {len(books)} book from the currently_reading list.")
+        return books
+
+    
+
+    def get_finished_reads_books(self) -> List[Books]:
+        """Retrieves the finished_reads list.                                                                  
+                                                 
+        Returns:                                                                                               
+            List[Books]: A list of Books dataclass instances representing the books on the finished_reads list.                                                                                                                 
+        """
+        if not self.finished_reads:
+            logger.warning("Retrieving books from an empty list.")
+            return []
+        else:
+            logger.info(f"Retrieving {len(self.finished_reads)} books from the finished_reads list.")
+
+        now = time.time()
+        books = []
+	
+        for book_id in self.finished_reads:
+            if book_id not in self._book_cache or self._ttl.get(book_id, 0) < now:
+                logger.info(f"TTL expired or missing for book {book_id}. Refreshing from DB.")
+                book = Books.get_book_by_id(book_id)
+                self._book_cache[book_id] = book
+                self._ttl[book_id] = now + self.ttl_seconds
+            else:
+                logger.debug(f"Using cached book {book_id} (TTL valid).")
+
+            books.append(self._book_cache[book_id])
+
+        logger.info(f"Retrieved {len(books)} book from the finished_reads list.")
+        return books
 
     def clear_cache(self):
         """Clears the local TTL cache of book objects.
