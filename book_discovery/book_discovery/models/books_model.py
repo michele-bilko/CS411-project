@@ -144,7 +144,7 @@ class Books(db.Model):
             ValueError: If the boxer with the given name does not exist.
 
         """
-        logger.info(f"Attempting to retrieve boxer with name {name}")
+        logger.info(f"Attempting to retrieve book with Google Books ID {google_books_id}")
 
         
         try:
@@ -162,7 +162,7 @@ class Books(db.Model):
             raise
 
     @classmethod
-    def delete(cls, boxer_id: int) -> None:
+    def delete(cls, book_id: int) -> None:
         """Delete a boxer by ID.
 
         Args:
@@ -172,77 +172,29 @@ class Books(db.Model):
             ValueError: If the boxer with the given ID does not exist.
 
         """
-        boxer = cls.get_boxer_by_id(boxer_id)
-        if boxer is None:
-            logger.info(f"Boxer with ID {boxer_id} not found.")
-            raise ValueError(f"Boxer with ID {boxer_id} not found.")
-        db.session.delete(boxer)
+        book = cls.get_book_by_id(book_id)
+        if book is None:
+            logger.info(f"Book with ID {book_id} not found.")
+            raise ValueError(f"Book with ID {book_id} not found.")
+        db.session.delete(book)
         db.session.commit()
-        logger.info(f"Boxer with ID {boxer_id} permanently deleted.")
+        logger.info(f"Book with ID {book_id} permanently deleted.")
 
-    def update_stats(self, result: str) -> None:
-        """Update the boxer's fight and win count based on result.
-
-        Args:
-            result: The result of the fight ('win' or 'loss').
-
-        Raises:
-            ValueError: If the result is not 'win' or 'loss'.
-            ValueError: If the number of wins exceeds the number of fights.
-
-        """
-        if result not in {"win", "loss"}:
-            raise ValueError("Result must be 'win' or 'loss'.")
-
-        self.fights += 1
-        if result == "win":
-            self.wins += 1
-        else:
-            self.losses += 1  # Track losses for completeness
-
-        if self.wins > self.fights:
-            raise ValueError("Wins cannot exceed number of fights.")
-
-        db.session.commit()
-        logger.info(f"Updated stats for boxer {self.name}: {self.fights} fights, {self.wins} wins, {self.losses} losses")
     @staticmethod
-    def get_leaderboard(sort_by: str = "wins") -> List[dict]:
-        """Retrieve a sorted leaderboard of boxers.
-
-        Args:
-            sort_by (str): Either "wins" or "win_pct".
+    def get_book_list(cls) -> List["Books"]:
+        """Retrieve a list of all books in databased sorted alphabetically by title.
 
         Returns:
-            List[Dict]: List of boxers with stats and win percentage.
-
-        Raises:
-            ValueError: If the sort_by parameter is not valid.
+            List[Books]: Sorted list of books.
 
         """
-        logger.info(f"Retrieving leaderboard. Sort by: {sort_by}")
+        logger.info(f"Retrieving list of books ordered alphabetically by title")
 
-        if sort_by not in {"wins", "win_pct"}:
-            logger.error(f"Invalid sort_by parameter: {sort_by}")
-            raise ValueError(f"Invalid sort_by parameter: {sort_by}")
-
-        boxers = Boxers.query.filter(Boxers.fights > 0).all()
+        books = Books.query.order_by(Books.title.asc()).all()
 
         def compute_win_pct(b: Boxers) -> float:
             return round((b.wins / b.fights) * 100, 1) if b.fights > 0 else 0.0
 
-        leaderboard = [{
-            "id": b.id,
-            "name": b.name,
-            "weight": b.weight,
-            "height": b.height,
-            "reach": b.reach,
-            "age": b.age,
-            "weight_class": b.weight_class,
-            "fights": b.fights,
-            "wins": b.wins,
-            "win_pct": compute_win_pct(b)
-        } for b in boxers]
-
-        leaderboard.sort(key=lambda b: b[sort_by], reverse=True)
-        logger.info("Leaderboard retrieved successfully.")
-        return leaderboard
+    
+        logger.info("Books list retrieved successfully.")
+        return books
