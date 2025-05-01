@@ -201,7 +201,7 @@ shed.")
             logger.error(f"Invalid book list: {book_list}.")
             ValueError(f"Invalid book list: {book_list}.")
 
-    def assign_book_rating(self, book_id, rating: int):
+    def assign_book_rating(self, book_id: str, rating: int):
         """
         Assign a rating (1-5) to a book.
 
@@ -215,7 +215,7 @@ shed.")
         """
         if rating < 1 or rating > 5:
             logger.warning(f"Invalid rating: {rating}")
-            raise ValueError("Rating must be from 1-5")
+            raise ValueError(f"Rating must be from 1-5")
 
         now = time.time()
 

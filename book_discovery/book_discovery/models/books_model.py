@@ -27,10 +27,11 @@ class Books(db.Model):
     description = db.Column(db.Text)
     page_count = db.Column(db.Integer)
     date_published = db.Column(db.String(20))
+    rating = db.Column(db.Integer)
 
 
 
-    def __init__(self, google_books_id, title, authors, genres=None, description=None, page_count=None, date_published=None):
+    def __init__(self, google_books_id, title, authors, genres=None, description=None, page_count=None, date_published=None, rating=None):
         """Initialize a new Book instance with basic attributes.
 
         Args:
@@ -41,6 +42,7 @@ class Books(db.Model):
             description (str): A brief description of the book.
             page_count (int): The book's page count.
             date_published (str): The book's date or year of publication.
+            rating (int): User-assigned rating from 1-5.
 
         """
 
@@ -55,7 +57,7 @@ class Books(db.Model):
         
 
     @classmethod
-    def create_book(cls, google_books_id: str, title: str, authors: str, genres: str = None, description: str = None, page_count: int = None, date_published: str = None) -> None:
+    def create_book(cls, google_books_id: str, title: str, authors: str, genres: str = None, description: str = None, page_count: int = None, date_published: str = None, rating: int = None) -> None:
         """Create and persist a new Book.
 
         Args:
@@ -66,6 +68,7 @@ class Books(db.Model):
             description: A brief description of the book.
             page_count: The book's page count.
             date_published: The book's date or year of publication.
+            rating: User-assigned rating from 1-5.
 
         Raises:
             ValueError: If a book with the same name already exists.
@@ -76,7 +79,7 @@ class Books(db.Model):
 
         
         try:
-            book = Books(google_books_id, title, authors, genres, description, page_count, date_published)
+            book = Books(google_books_id, title, authors, genres, description, page_count, date_published, rating)
 
             existing = Books.query.filter_by(google_books_id=google_books_id).first()
             if existing:
