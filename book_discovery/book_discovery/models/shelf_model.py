@@ -164,6 +164,47 @@ shed.")
         self.finished_reads.append(book_id)
 
 
+    def remove_book_from_list(self, book_id: str, book_list: str):
+        """
+        Remove book from the specified list.
+        
+        Args:
+            book_id (str): The Google Books ID of the book to remove.
+            book_list (str): The appropriate list from which to remove the book.
+
+        Raises:
+            ValueError: If the book is not contained in the specified list or the list name is not valid.
+        
+        """
+        logger.info(f"Removing book {book_id} from {book_list}")
+
+        if book_list == "tbr":
+            if book_id not in self.tbr:
+            logger.warning(f"Book ID {book_id} is not on the specified list.")
+            raise ValueError("Book ID {book_id} is not on the specified list.")
+        self.tbr.remove(book_id)
+
+        elif book_list == "currently_reading":
+            if book_id not in self.currently_reading:
+            logger.warning(f"Book ID {book_id} is not on the specified list.")
+            raise ValueError("Book ID {book_id} is not on the specified list.")
+	self.currently_reading.remove(book_id)
+
+        elif book_list == "finished_reads":
+            if book_id not in self.currently_reading:
+            logger.warning(f"Book ID {book_id} is not on the specified list.")
+            raise ValueError("Book ID {book_id} is not on the specified list.")
+        self.finished_reads.remove(book_id)
+
+
+else:
+    logger.error(f"Invalid book list: {book_list}.")
+    Valueerror(f"Invalid book list: {book_list}.")
+    
+            
+        
+
+
     def get_boxers(self) -> List[Boxers]:
         """Retrieves the current list of boxers in the ring.
 
@@ -194,34 +235,10 @@ shed.")
         logger.info(f"Retrieved {len(boxers)} boxers from the ring.")
         return boxers
 
-    def get_fighting_skill(self, boxer: Boxers) -> float:
-        """Calculates the fighting skill for a boxer based on arbitrary rules.
-
-        The fighting skill is computed as:
-        - Multiply the boxer's weight by the number of letters in their name.
-        - Subtract an age modifier (if age < 25, subtract 1; if age > 35, subtract 2).
-        - Add a reach bonus (reach / 10).
-
-        Args:
-            boxer (Boxers): A Boxers dataclass representing the combatant.
-
-        Returns:
-            float: The calculated fighting skill.
-
-        """
-        logger.info(f"Calculating fighting skill for {boxer.name}: weight={boxer.weight}, age={boxer.age}, reach={boxer.reach}")
-
-        # Arbitrary calculations
-        age_modifier = -1 if boxer.age < 25 else (-2 if boxer.age > 35 else 0)
-        skill = (boxer.weight * len(boxer.name)) + (boxer.reach / 10) + age_modifier
-
-        logger.info(f"Fighting skill for {boxer.name}: {skill:.3f}")
-        return skill
-
     def clear_cache(self):
-        """Clears the local TTL cache of boxer objects.
+        """Clears the local TTL cache of book objects.
 
         """
-        logger.info("Clearing local boxer cache in RingModel.")
-        self._boxer_cache.clear()
+        logger.info("Clearing local books cache in ShelfModel.")
+        self._book_cache.clear()
         self._ttl.clear()
