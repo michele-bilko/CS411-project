@@ -59,7 +59,7 @@ class ShelfModel:
                 book = self._book_cache[book_id]
         else:
             try:
-                boxer = Books.get_book_by_id(book_id)
+                book = Books.get_book_by_id(book_id)
                 logger.info(f"Book ID {book_id} loaded from DB")
 
             except ValueError as e:
