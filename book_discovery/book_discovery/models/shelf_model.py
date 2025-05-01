@@ -78,8 +78,8 @@ class ShelfModel:
         self.tbr.append(book_id)
 
         
-    def add_book_to_currently_reading(self, book_id: str):
-        """Add a new book to the currently_reading list.
+    def begin_reading(self, book_id: str):
+        """Begin reading a new book by moving it from the tbr list to the currently_reading list.
 
         Args:
             book_id (str): The ID of the book to be added to the currently_reading list.
@@ -89,6 +89,10 @@ class ShelfModel:
 
         """
 
+        if book_id not in self.tbr:
+            logger.warning(f"Book ID {book_id} must be added to tbr before it can be moved to current reads.")
+            raise ValueError("Book ID {book_id} must be added to tbr before it can be moved to current reads.")
+        
         if book_id in self.currently_reading:
             logger.warning(f"Book ID {book_id} is already in currently_reading list.")
             raise ValueError("Book already in currently_reading list.")
@@ -110,14 +114,15 @@ class ShelfModel:
         self._book_cache[book_id] = book
         self._ttl[book_id] = now + self.ttl_seconds
 
-        logger.info(f"Adding book '{book.title}' (ID {book_id}) to the currently_reading list.")
+        logger.info(f"Moving book '{book.title}' (ID {book_id}) to the currently_reading list.")
 
+        self.tbr.remove(book_id)
         self.currently_reading.append(book_id)
 
 
         
-    def add_book_to_finished_reads(self, book_id: str):
-        """Add a new book to the finished_reads list.
+    def finish_reading(self, book_id: str):
+        """Mark a book as finished by moving it from the currently_reading list to the finished_reads list.
 
         Args:
             book_id (str): The ID of the book to be added to the finished_reads list.
@@ -126,6 +131,11 @@ class ShelfModel:
             ValueError: If the book ID is invalid or the book does not exist.
 
         """
+
+        if book_id not in self.currently_reading:
+            logger.warning(f"Book ID {book_id} must already be in currently_reading in order to mark it as finished.")
+            raise ValueError("Book ID {book_id} must already be in currently_reading in order to mark it as fini\
+shed.")
 
         if book_id in self.tbr:
             logger.warning(f"Book ID {book_id} is already in finished_reads list.")
@@ -150,6 +160,7 @@ class ShelfModel:
 
         logger.info(f"Adding book '{book.title}' (ID {book_id}) to the finished_reads list.")
 
+        self.currently_reading.remove(book_id)
         self.finished_reads.append(book_id)
 
 
