@@ -53,6 +53,7 @@ class Books(db.Model):
         self.description = description
         self.page_count = page_count
         self.date_published = date_published
+        self.rating = rating
 
         
 
