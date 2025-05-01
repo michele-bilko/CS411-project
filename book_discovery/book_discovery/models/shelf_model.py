@@ -51,6 +51,10 @@ class ShelfModel:
             ValueError: If the book ID is invalid or the book does not exist.
 
         """
+
+        if book_id in self.tbr:
+            logger.warning(f"Book ID {book_id} is already in tbr list.")
+            raise ValueError("Book already in tbr list.")
         
         now = time.time()
 
@@ -84,6 +88,10 @@ class ShelfModel:
             ValueError: If the book ID is invalid or the book does not exist.
 
         """
+
+        if book_id in self.currently_reading:
+            logger.warning(f"Book ID {book_id} is already in currently_reading list.")
+            raise ValueError("Book already in currently_reading list.")
         
         now = time.time()
 
@@ -118,6 +126,10 @@ class ShelfModel:
             ValueError: If the book ID is invalid or the book does not exist.
 
         """
+
+        if book_id in self.tbr:
+            logger.warning(f"Book ID {book_id} is already in finished_reads list.")
+            raise ValueError("Book already in finished_reads_list.")
         
         now = time.time()
 
