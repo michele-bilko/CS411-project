@@ -72,7 +72,7 @@ class Books(db.Model):
             SQLAlchemyError: If there is a database error during creation.
 
         """
-        logger.info(f"Creating boxer: {name}, {weight=} {height=} {reach=} {age=}")
+        logger.info(f"Creating book: {google_books_id}, {title}")
 
         
         try:
@@ -102,17 +102,17 @@ class Books(db.Model):
         """Retrieve a boxer by ID.
 
         Args:
-            boxer_id: The ID of the boxer.
+            book_id: The ID of the book.
 
         Returns:
-            Boxer: The boxer instance.
+            Book: The book instance.
 
         Raises:
-            ValueError: If the boxer with the given ID does not exist.
+            ValueError: If the book with the given ID does not exist.
 
         """
 
-        logger.info(f"Attempting to retrieve boxer with ID {boxer_id}")
+        logger.info(f"Attempting to retrieve book with ID {book_id}")
 
         
         try:
@@ -132,16 +132,16 @@ class Books(db.Model):
 
     @classmethod
     def get_book_by_google_books_id(cls, google_books_id: str) -> "Books":
-        """Retrieve a boxer by name.
+        """Retrieve a book by its Google Books ID.
 
         Args:
-            name: The name of the boxer.
+            google_books_id: the Google Books ID for the book.
 
         Returns:
-            Boxer: The boxer instance.
+            Book: The book instance.
 
         Raises:
-            ValueError: If the boxer with the given name does not exist.
+            ValueError: If the book with the given Google Books ID does not exist.
 
         """
         logger.info(f"Attempting to retrieve book with Google Books ID {google_books_id}")
@@ -163,13 +163,13 @@ class Books(db.Model):
 
     @classmethod
     def delete(cls, book_id: int) -> None:
-        """Delete a boxer by ID.
+        """Delete a book by ID.
 
         Args:
-            boxer_id: The ID of the boxer to delete.
+            book_id: The ID of the book to delete.
 
         Raises:
-            ValueError: If the boxer with the given ID does not exist.
+            ValueError: If the book with the given ID does not exist.
 
         """
         book = cls.get_book_by_id(book_id)
@@ -180,9 +180,9 @@ class Books(db.Model):
         db.session.commit()
         logger.info(f"Book with ID {book_id} permanently deleted.")
 
-    @staticmethod
+    @classmethod
     def get_book_list(cls) -> List["Books"]:
-        """Retrieve a list of all books in databased sorted alphabetically by title.
+        """Retrieve a list of all books in database sorted alphabetically by title.
 
         Returns:
             List[Books]: Sorted list of books.
@@ -191,10 +191,6 @@ class Books(db.Model):
         logger.info(f"Retrieving list of books ordered alphabetically by title")
 
         books = Books.query.order_by(Books.title.asc()).all()
-
-        def compute_win_pct(b: Boxers) -> float:
-            return round((b.wins / b.fights) * 100, 1) if b.fights > 0 else 0.0
-
     
         logger.info("Books list retrieved successfully.")
         return books
