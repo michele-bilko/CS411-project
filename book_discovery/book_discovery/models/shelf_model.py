@@ -2,38 +2,41 @@ import logging
 import math
 import os
 import time
-from typing import List
+from typing import List, Dict
 
-from boxing.models.boxers_model import Boxers
-from boxing.utils.logger import configure_logger
-from boxing.utils.api_utils import get_random
+from book_discovery.models.books_model import Books
+from book_discovery.utils.logger import configure_logger
+from book_discovery.utils.api_utils import get_random
 
 
 logger = logging.getLogger(__name__)
 configure_logger(logger)
 
 
-class RingModel:
-    """A class to manage the the ring in which boxers have fights.
-
+class ShelfModel:
+    """A class to manage an individual user's reading activity.
     """
 
     def __init__(self):
-        """Initializes the RingManager with an empty list of combatants.
+        """Initializes the ShelfModel with 3 initially empty lists: tbr, currently_reading, finished_reads.
 
-        The ring is initially empty, and the boxer cache and time-to-live (TTL) caches are also initialized.
+        The shelf is initially empty, and the book cache and time-to-live (TTL) caches are also initialized.
         The TTL is set to 60 seconds by default, but this can be overridden by setting the TTL_SECONDS environment variable.
 
         Attributes:
-            ring (List[int]): The list of ids of the boxers in the ring.
-            _boxer_cache (dict[int, Boxers]): A cache to store boxer objects for quick access.
+            tbr (List[str): A list with to-read books.
+            currently_reading (List[str]): A list of in-progress reads.
+            finished_reads: A list of completed reads.
+            _book_cache (dict[int, Books]): A cache to store book objects for quick access.
             _ttl (dict[int, float]): A cache to store the time-to-live for each boxer.
             ttl_seconds (int): The time-to-live in seconds for the cached boxer objects.
 
         """
 
-        self.ring: List[int] = []
-        self._boxer_cache: dict[int, Boxers] = {}
+        self.tbr: List[str] = []
+        self.currently_reading: List[str] = []
+        self.finished_reads: List[str] = []
+        self._book_cache: dict[int, Books] = {}
         self._ttl: dict[int, float] = {}
         self.ttl_seconds = int(os.getenv("TTL_SECONDS", 60))
 
