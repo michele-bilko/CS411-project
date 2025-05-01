@@ -116,7 +116,7 @@ class Books(db.Model):
 
         
         try:
-            boxer = cls.query.get(book_id)
+            book = cls.query.get(book_id)
             
             if book is None:
                 logger.info(f"Book with ID {book_id} not found.")
