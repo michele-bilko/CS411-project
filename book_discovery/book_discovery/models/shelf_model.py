@@ -48,7 +48,7 @@ class ShelfModel:
             book_id (str): The ID of the book to be added to the tbr list.
 
         Raises:
-            ValueError: If the boxer ID is invalid or the boxer does not exist.
+            ValueError: If the book ID is invalid or the book does not exist.
 
         """
         
@@ -69,9 +69,76 @@ class ShelfModel:
         self._book_cache[book_id] = book
         self._ttl[book_id] = now + self.ttl_seconds
 
-        logger.info(f"Adding book '{book.title}' (ID {book_id}) to the tbr")
+        logger.info(f"Adding book '{book.title}' (ID {book_id}) to the tbr list.")
 
         self.tbr.append(book_id)
+
+        
+    def add_book_to_currently_reading(self, book_id: str):
+        """Add a new book to the currently_reading list.
+
+        Args:
+            book_id (str): The ID of the book to be added to the currently_reading list.
+
+        Raises:
+            ValueError: If the book ID is invalid or the book does not exist.
+
+        """
+        
+        now = time.time()
+
+        if book_id in self._book_cache and self._ttl.get(book_id, 0) > now:
+                logger.debug(f"Book ID {book_id} retrieved from cache")
+                book = self._book_cache[book_id]
+        else:
+            try:
+                book = Books.get_book_by_id(book_id)
+                logger.info(f"Book ID {book_id} loaded from DB")
+
+            except ValueError as e:
+                logger.error(str(e))
+                raise
+
+        self._book_cache[book_id] = book
+        self._ttl[book_id] = now + self.ttl_seconds
+
+        logger.info(f"Adding book '{book.title}' (ID {book_id}) to the currently_reading list.")
+
+        self.currently_reading.append(book_id)
+
+
+        
+    def add_book_to_finished_reads(self, book_id: str):
+        """Add a new book to the finished_reads list.
+
+        Args:
+            book_id (str): The ID of the book to be added to the finished_reads list.
+
+        Raises:
+            ValueError: If the book ID is invalid or the book does not exist.
+
+        """
+        
+        now = time.time()
+
+        if book_id in self._book_cache and self._ttl.get(book_id, 0) > now:
+                logger.debug(f"Book ID {book_id} retrieved from cache")
+                book = self._book_cache[book_id]
+        else:
+            try:
+                book = Books.get_book_by_id(book_id)
+                logger.info(f"Book ID {book_id} loaded from DB")
+
+            except ValueError as e:
+                logger.error(str(e))
+                raise
+
+        self._book_cache[book_id] = book
+        self._ttl[book_id] = now + self.ttl_seconds
+
+        logger.info(f"Adding book '{book.title}' (ID {book_id}) to the finished_reads list.")
+
+        self.finished_reads.append(book_id)
 
 
     def get_boxers(self) -> List[Boxers]:
