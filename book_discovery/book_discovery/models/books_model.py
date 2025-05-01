@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from book_discovery.db import db
 from book_discovery.utils.logger import configure_logger
@@ -76,7 +76,7 @@ class Books(db.Model):
 
         
         try:
-            book = Books(title, authors, genres, description, page_count, date_published)
+            book = Books(google_books_id, title, authors, genres, description, page_count, date_published)
 
             existing = Books.query.filter_by(google_books_id=google_books_id).first()
             if existing:
@@ -85,7 +85,7 @@ class Books(db.Model):
 
             db.session.add(book)
             db.session.commit()
-            logger.info(f"Book created successfully: {google_books_id}")
+            logger.info(f"Book '{title}' created successfully")
             
         except IntegrityError:
             logger.error(f"Book with ID '{google_books_id}' already exists in database.")
