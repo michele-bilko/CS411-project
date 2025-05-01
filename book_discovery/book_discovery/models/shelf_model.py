@@ -200,7 +200,14 @@ shed.")
         else:
             logger.error(f"Invalid book list: {book_list}.")
             ValueError(f"Invalid book list: {book_list}.")
-                      
+
+    def assign_book_rating(self, book_id, rating: int):
+        """
+        Assign a rating (1-5) to a book.
+
+        Args:
+            book_id (str): The Google Books ID of the book.
+            rating (int): The rating to assign.
 
 
     def get_tbr_books(self) -> List[Books]:
