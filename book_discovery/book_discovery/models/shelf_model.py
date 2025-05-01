@@ -71,7 +71,7 @@ class ShelfModel:
 
         logger.info(f"Adding book '{book.title}' (ID {book_id}) to the tbr")
 
-        self.ring.append(book_id)
+        self.tbr.append(book_id)
 
 
     def get_boxers(self) -> List[Boxers]:
