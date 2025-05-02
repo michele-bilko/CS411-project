@@ -9,18 +9,18 @@ Routes
 **Health** 
 
 Route: /health <br/>
-Request Type: GET
-Purpose: Health check route to verify the service is running
-Request Body: None
-Response Format: JSON
-Success Response Example:             
-  'status': 'success',
-  'message': 'Service is running'
+Request Type: GET <br/>
+Purpose: Health check route to verify the service is running <br/>
+Request Body: None <br/>
+Response Format: JSON <br/>
+Success Response Example: <br/>
+  'status': 'success', <br/>
+  'message': 'Service is running' <br/>
       
-Example Request: GET /api/health
-Example Response: 
-  'status': 'success',
-  'message': 'Service is running'
+Example Request: GET /api/health <br/>
+Example Response:  <br/>
+  'status': 'success', <br/>
+  'message': 'Service is running' <br/>
 
 **Create Account**
 Route: /create-account
