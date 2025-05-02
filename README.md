@@ -22,83 +22,82 @@ Example Response:  <br/>
   'status': 'success', <br/>
   'message': 'Service is running' <br/>
 
-**Create Account**
-Route: /create-account
-Request Type: PUT
-Purpose: Register A new account
-Request Body: 
-  Username: string
-  Passowrd: string
+**Create Account** <br/>
+Route: /create-account <br/>
+Request Type: PUT <br/>
+Purpose: Register A new account <br/>
+Request Body:  <br/>
+  Username: string <br/>
+  Passowrd: string <br/>
 
-Response Format: JSON
-Success Response Example:             
-  "status": "success",
-  "message": "User '{username}' created successfully"
+Response Format: JSON <br/>
+Success Response Example: <br/>
+  "status": "success", <br/>
+  "message": "User '{username}' created successfully" <br/>
       
-Example Request: 
-  "username": "newuser",
-  "password": "newpassword"
+Example Request:  <br/>
+  "username": "newuser", <br/>
+  "password": "newpassword" <br/>
   
-Example Response: 
-  "status": "success",
-  "message": "User 'newuser' created successfully"
+Example Response:  <br/>
+  "status": "success", <br/>
+  "message": "User 'newuser' created successfully" <br/>
 
-**login**
-Route: /login
-Request Type: POST
-Purpose: Authenticate a user 
-Request Body: 
-  Username: string
-  Passowrd: string
+**login** <br/>
+Route: /login <br/>
+Request Type: POST <br/>
+Purpose: Authenticate a user  <br/>
+Request Body:  <br/>
+  Username: string <br/>
+  Passowrd: string <br/>
 
-Response Format: JSON
-Success Response Example:             
-  "status": "success",
-  "message": "User '{username}' logged in successfully"
+Response Format: JSON <br/>
+Success Response Example: <br/>    
+  "status": "success", <br/>
+  "message": "User '{username}' logged in successfully" <br/>
       
-Example Request: 
-  "username": "existinguser",
-  "password": "correctpassword"
+Example Request:  <br/>
+  "username": "existinguser", <br/>
+  "password": "correctpassword" <br/>
 
+Example Response: <br/>
+  "status": "success", <br/>
+  "message": "User 'existinguser' logged in successfully" <br/>
+
+**log-out** <br/>
+Route: /logout <br/>
+Request Type: POST <br/>
+Purpose: Log out the user <br/>
+Request Body: N/A <br/>
+Response Format: JSON <br/>
+Success Response Example:  <br/> 
+  "status": "success", <br/>
+  "message": "User logged out successfully" <br/>
+      
+Example Request: POST /api/logout <br/>
+
+Example Response: <br/>
+  "status": "success", <br/>
+  "message": "User logged out successfully" <br/>
+
+**change password** <br/>
+Route: /change-password <br/>
+Request Type: POST <br/>
+Purpose: to change the passoword of the user. <br/>
+Request Body:  <br/>
+  "new_password": "string" <br/>
   
-Example Response: 
-  "status": "success",
-  "message": "User 'existinguser' logged in successfully"
-
-**log-out**
-Route: /logout
-Request Type: POST
-Purpose: Log out the user
-Request Body: N/A
-Response Format: JSON
-Success Response Example:             
-  "status": "success",
-  "message": "User logged out successfully"
-      
-Example Request: POST /api/logout
-
-Example Response: 
-  "status": "success",
-  "message": "User logged out successfully"
-
-**change password**
-Route: /change-password
-Request Type: POST
-Purpose: to change the passoword of the user.
-Request Body: 
-  "new_password": "string"
-  
-Response Format: JSON
-Success Response Example:             
-  Code: 200
-  Content: { "message": "Account created successfully" }
+Response Format: JSON <br/>
+Success Response Example:              <br/>
+  Code: 200 <br/>
+  Content: { "message": "Account created successfully" } <br/>
 
       
-Example Request: POST /api/change-password
+Example Request: POST /api/change-password <br/>
 
-Example Response: 
-  "status": "success",
-  "message": "Password changed successfully"
+Example Response:  <br/>
+  "status": "success", <br/>
+  "message": "Password changed successfully" <br/>
 
 **Search Books**
 Route: /api/search-books
