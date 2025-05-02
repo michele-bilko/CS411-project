@@ -8,7 +8,7 @@ Routes
 
 **Health** 
 
-Route: /health
+Route: /health <br/>
 Request Type: GET
 Purpose: Health check route to verify the service is running
 Request Body: None
