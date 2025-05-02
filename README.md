@@ -6,7 +6,8 @@ and maintaing a book shelf. Users can add books to their reading list and track 
 
 Routes
 
-**Health**
+**Health** 
+
 Route: /health
 Request Type: GET
 Purpose: Health check route to verify the service is running
