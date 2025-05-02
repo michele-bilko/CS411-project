@@ -99,203 +99,203 @@ Example Response:  <br/>
   "status": "success", <br/>
   "message": "Password changed successfully" <br/>
 
-**Search Books**
-Route: /api/search-books
-Request Type: GET
-Purpose: Search for books using Google Books API.
-Request Body:
-"query": "string",
-"max_results": "int"
+**Search Books** <br/>
+Route: /api/search-books <br/>
+Request Type: GET <br/>
+Purpose: Search for books using Google Books API. <br/>
+Request Body: <br/>
+"query": "string", <br/>
+"max_results": "int" <br/>
 
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "books": [book_list] }
+Response Format: JSON <br/>
+Success Response Example: <br/>
+Code: 200 <br/>
+Content: { "status": "success", "books": [book_list] } <br/>
 
-Example Request: GET /api/search-books?query=python&max_results=5
-Example Response:
-"status": "success"
-"books": [book_list]
+Example Request: GET /api/search-books <br/>
+Example Response: <br/>
+"status": "success" <br/>
+"books": [book_list] <br/>
 
-**Book Details**
-Route: /api/book-details/book_id
-Request Type: GET
-Purpose: Get detailed information about a specific book.
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "book": book_details }
+**Book Details** <br/>
+Route: /api/book-details/book_id <br/>
+Request Type: GET <br/>
+Purpose: Get detailed information about a specific book. <br/>
+Response Format: JSON <br/>
+Success Response Example: <br/>
+Code: 200 <br/>
+Content: { "status": "success", "book": book_details } <br/>
 
-Example Request: GET /api/book-details/12345
-Example Response:
-"status": "success"
-"book": book_details
+Example Request: GET /api/book-details <br/>
+Example Response: <br/>
+"status": "success" <br/>
+"book": book_details <br/>
 
-**Reading List**
-Route: /api/add-to-reading-list
-Request Type: POST
-Purpose: Add a book to the reading list.
-Request Body:
-"book_id": "string"
+**Reading List** <br/>
+Route: /api/add-to-reading-list <br/>
+Request Type: POST <br/>
+Purpose: Add a book to the reading list. <br/>
+Request Body: <br/>
+"book_id": "string" <br/>
 
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "message": "Book added to reading list" }
+Response Format: JSON <br/>
+Success Response Example: <br/>
+Code: 200 <br/>
+Content: { "status": "success", "message": "Book added to reading list" } <br/>
 
-Example Request: POST /api/add-to-reading-list
-Example Response:
-"status": "success"
-"message": "Book added to reading list"
+Example Request: POST /api/add-to-reading-list <br/>
+Example Response: <br/>
+"status": "success" <br/>
+"message": "Book added to reading list" <br/>
 
-**Start Reading**
-Route: /api/start-reading
-Request Type: POST
-Purpose: Move a book from reading list to currently reading.
-Request Body:
-"book_id": "string"
+**Start Reading** <br/>
+Route: /api/start-reading <br/>
+Request Type: POST <br/>
+Purpose: Move a book from reading list to currently reading. <br/>
+Request Body: <br/>
+"book_id": "string" <br/>
 
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "message": "Book moved to currently reading" }
+Response Format: JSON <br/>
+Success Response Example: <br/>
+Code: 200 <br/>
+Content: { "status": "success", "message": "Book moved to currently reading" } <br/>
 
-Example Request: POST /api/start-reading
-Example Response:
-"status": "success"
-"message": "Book moved to currently reading"
+Example Request: POST /api/start-reading <br/>
+Example Response: <br/>
+"status": "success" <br/>
+"message": "Book moved to currently reading" <br/>
+ 
+**Mark as Read**<br/>
+Route: /api/mark-as-read<br/>
+Request Type: POST<br/>
+Purpose: Mark a book as completed.<br/>
+Request Body:<br/>
+"book_id": "string"<br/>
 
-**Mark as Read**
-Route: /api/mark-as-read
-Request Type: POST
-Purpose: Mark a book as completed.
-Request Body:
-"book_id": "string"
+Response Format: JSON<br/>
+Success Response Example:<br/>
+Code: 200<br/>
+Content: { "status": "success", "message": "Book marked as read" }<br/>
 
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "message": "Book marked as read" }
+Example Request: POST /api/mark-as-read <br/>
+Example Response:<br/>
+"status": "success"<br/>
+"message": "Book marked as read"<br/>
 
-Example Request: POST /api/mark-as-read
-Example Response:
-"status": "success"
-"message": "Book marked as read"
+**Remove Book**<br/>
+Route: /api/remove-book<br/>
+Request Type: POST<br/>
+Purpose: Remove a book from a specific list.<br/>
+Request Body:<br/>
+"book_id": "string",<br/>
+"list_type": "string" (Optional, defaults to 'reading_list')<br/>
 
-**Remove Book**
-Route: /api/remove-book
-Request Type: POST
-Purpose: Remove a book from a specific list.
-Request Body:
-"book_id": "string",
-"list_type": "string" (Optional, defaults to 'reading_list')
+Response Format: JSON<br/>
+Success Response Example:<br/>
+Code: 200<br/>
+Content: { "status": "success", "message": "Book removed from {list_type}" }<br/>
 
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "message": "Book removed from {list_type}" }
+Example Request: POST /api/remove-book<br/>
+Example Response:<br/>
+"status": "success"<br/>
+"message": "Book removed from reading list"<br/>
 
-Example Request: POST /api/remove-book
-Example Response:
-"status": "success"
-"message": "Book removed from reading list"
+**Get Reading List**<br/>
+Route: /api/get-reading-list<br/>
+Request Type: GET<br/>
+Purpose: Get all books in the reading list.<br/>
+Response Format: JSON<br/>
+Success Response Example:<br/>
+Code: 200<br/>
+Content: { "status": "success", "books": [book_list] }<br/>
 
-**Get Reading List**
-Route: /api/get-reading-list
-Request Type: GET
-Purpose: Get all books in the reading list.
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "books": [book_list] }
+Example Request: GET /api/get-reading-list<br/>
+Example Response:<br/>
+"status": "success"<br/>
+"books": [book_list]<br/>
 
-Example Request: GET /api/get-reading-list
-Example Response:
-"status": "success"
-"books": [book_list]
+**Get Current Reads**<br/>
+Route: /api/get-current-reads<br/>
+Request Type: GET<br/>
+Purpose: Get all books currently being read.<br/>
+Response Format: JSON<br/>
+Success Response Example:<br/>
+Code: 200<br/>
+Content: { "status": "success", "books": [book_list] }<br/>
 
-**Get Current Reads**
-Route: /api/get-current-reads
-Request Type: GET
-Purpose: Get all books currently being read.
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "books": [book_list] }
+Example Request: GET /api/get-current-reads<br/>
+Example Response:<br/>
+"status": "success"<br/>
+"books": [book_list]<br/>
 
-Example Request: GET /api/get-current-reads
-Example Response:
-"status": "success"
-"books": [book_list]
+**Get Completed Books**<br/>
+Route: /api/get-completed-books<br/>
+Request Type: GET<br/>
+Purpose: Get all completed books.<br/>
+Response Format: JSON<br/>
+Success Response Example:<br/>
+Code: 200<br/>
+Content: { "status": "success", "books": [book_list] }<br/>
 
-**Get Completed Books**
-Route: /api/get-completed-books
-Request Type: GET
-Purpose: Get all completed books.
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "books": [book_list] }
+Example Request: GET /api/get-completed-books<br/>
+Example Response:<br/>
+"status": "success"<br/>
+"books": [book_list]<br/>
 
-Example Request: GET /api/get-completed-books
-Example Response:
-"status": "success"
-"books": [book_list]
+**Get Recommendations**<br/>
+Route: /api/get-recommendations<br/>
+Request Type: GET<br/>
+Purpose: Get book recommendations based on completed books.<br/>
+Response Format: JSON<br/>
+Success Response Example:<br/>
+Code: 200<br/>
+Content: { "status": "success", "recommendations": [book_list] }<br/>
 
-**Get Recommendations**
-Route: /api/get-recommendations
-Request Type: GET
-Purpose: Get book recommendations based on completed books.
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "recommendations": [book_list] }
+Example Request: GET /api/get-recommendations<br/>
+Example Response:<br/>
+"status": "success"<br/>
+"recommendations": [book_list]<br/>
 
-Example Request: GET /api/get-recommendations
-Example Response:
-"status": "success"
-"recommendations": [book_list]
+**Reset Users**<br/>
+Route: /api/reset-users<br/>
+Request Type: DELETE<br/>
+Purpose: Recreate the users table to delete all users.<br/>
+Response Format: JSON<br/>
+Success Response Example:<br/>
+Code: 200<br/>
+Content: { "status": "success", "message": "Users table recreated successfully" }<br/>
 
-**Reset Users**
-Route: /api/reset-users
-Request Type: DELETE
-Purpose: Recreate the users table to delete all users.
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "message": "Users table recreated successfully" }
+Example Request: DELETE /api/reset-users<br/>
+Example Response:<br/>
+"status": "success"<br/>
+"message": "Users table recreated successfully"<br/>
 
-Example Request: DELETE /api/reset-users
-Example Response:
-"status": "success"
-"message": "Users table recreated successfully"
+**Reset Books**<br/>
+Route: /api/reset-books<br/>
+Request Type: DELETE<br/>
+Purpose: Recreate the books table to delete all books.<br/>
+Response Format: JSON<br/>
+Success Response Example:<br/>
+Code: 200<br/>
+Content: { "status": "success", "message": "Books table recreated successfully" }<br/>
 
-**Reset Books**
-Route: /api/reset-books
-Request Type: DELETE
-Purpose: Recreate the books table to delete all books.
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "message": "Books table recreated successfully" }
+Example Request: DELETE /api/reset-books<br/>
+Example Response:<br/>
+"status": "success"<br/>
+"message": "Books table recreated successfully"<br/>
 
-Example Request: DELETE /api/reset-books
-Example Response:
-"status": "success"
-"message": "Books table recreated successfully"
+**Clear Shelf**<br/>
+Route: /api/clear-shelf<br/>
+Request Type: POST<br/>
+Purpose: Clear all lists in the shelf.<br/>
+Response Format: JSON<br/>
+Success Response Example:<br/>
+Code: 200<br/>
+Content: { "status": "success", "message": "Shelf cleared successfully" }<br/>
 
-**Clear Shelf**
-Route: /api/clear-shelf
-Request Type: POST
-Purpose: Clear all lists in the shelf.
-Response Format: JSON
-Success Response Example:
-Code: 200
-Content: { "status": "success", "message": "Shelf cleared successfully" }
-
-Example Request: POST /api/clear-shelf
-Example Response:
-"status": "success"
-"message": "Shelf cleared successfully"
+Example Request: POST /api/clear-shelf<br/>
+Example Response:<br/>
+"status": "success"<br/>
+"message": "Shelf cleared successfully"<br/>
 
   
